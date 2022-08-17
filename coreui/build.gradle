@@ -1,0 +1,23 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: '../config/quality/quality.gradle'
+apply from: '../deps/deps_versions.gradle'
+apply from: '../deps/android_commons.gradle'
+
+dependencies {
+    implementation kotlin
+
+    for (item in androidx) {
+        implementation item.value
+    }
+
+    implementation dagger
+    implementation dagger_android
+    implementation dagger_android_support
+    kapt dagger_android_processor
+    kapt dagger_compiler
+}

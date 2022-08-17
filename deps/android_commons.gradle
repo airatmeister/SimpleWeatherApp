@@ -1,0 +1,53 @@
+// Общие для всех модулей настройки android gradle блока
+android {
+    compileSdkVersion sdkVersions.compileSdk
+
+    defaultConfig {
+        minSdkVersion sdkVersions.minSdk
+        targetSdkVersion sdkVersions.targetSdk
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        // release build for google play, master/release branches
+        release {
+//            minifyEnabled true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        // debug build for developers only
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    lintOptions {
+//        lintConfig file("$project.rootDir/config/quality/lint/lint.xml")
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    sourceSets.main.java.srcDirs += ['build/generated/source/navigation-args']
+}

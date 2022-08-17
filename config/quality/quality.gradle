@@ -1,0 +1,51 @@
+/**
+ * Set up Ktlint to perform extensive code analysis.
+ *
+ * Gradle tasks added:
+ * - ktlint
+ * - ktlintFormat
+ *
+ * Some tasks above are added as dependencies of the check task so running check will
+ * run all of them.
+ */
+
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    ktlint("com.pinterest:ktlint:0.41.0") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, getObjects().named(Bundling, Bundling.EXTERNAL))
+        }
+    }
+}
+
+apply from: "$rootDir/config/quality/detekt/detekt.gradle"
+
+def qualityConfigDir = "$project.rootDir/config/quality"
+def reportsDir = "$project.buildDir/reports"
+
+//NEW TASKS
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "src/**/*.kt"
+    // print style violations as usual + create report in checkstyle format
+    args "--reporter=html,output=${reportsDir}/ktlint.html"
+    args "--editorconfig=${qualityConfigDir}/ktlint/.editorconfig"
+}
+
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt"
+}
+
+//check.dependsOn 'checkstyle', 'findbugs', 'pmd'
+check.dependsOn ktlint

@@ -1,0 +1,26 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+    input = files(
+            "src/main/java/",
+    )
+    parallel = true
+    failFast = true // fail build on any finding
+    buildUponDefaultConfig = true // preconfigure defaults
+    config = files("$rootDir/config/quality/detekt/detekt-config.yml")
+    // point to your custom config defining rules to run, overwriting default behavior
+    // baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
+    reports {
+        html {
+            enabled = true // observe findings in your browser with structure and code snippets
+            destination = file("$project.buildDir/reports/detekt.html")
+            // Path where HTML report will be stored (default: `build/reports/detekt/detekt.html`)
+        }
+        xml {
+            enabled = false
+        }
+        txt {
+            enabled = false
+        }
+    }
+}

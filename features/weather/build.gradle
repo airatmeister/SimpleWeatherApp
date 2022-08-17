@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: "$rootDir/config/quality/quality.gradle"
+apply from: "$rootDir/deps/deps_versions.gradle"
+apply from: "$rootDir/deps/android_commons.gradle"
+
+dependencies {
+    implementation project(':core')
+    implementation project(':coreui')
+
+    implementation kotlin
+
+    for (item in androidx) {
+        implementation item.value
+    }
+
+    for (item in commonDependencies.forImplementation) {
+        implementation item
+    }
+
+    for (item in commonDependencies.forKapt) {
+        kapt item
+    }
+
+    // Retrofit
+    def retrofitVersion = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+
+    // Room
+    def roomVersion = '2.3.0'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+}
