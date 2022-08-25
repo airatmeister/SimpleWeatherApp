@@ -12,6 +12,7 @@ interface CacheDataSource {
     fun deleteCity(city: String)
 
     class Base @Inject constructor(private val cityDao: CityDao): CacheDataSource{
+
         override fun getCities() = cityDao.getSavedCities()
 
         override fun deleteCity(city: String) = cityDao.deleteByCity(city)

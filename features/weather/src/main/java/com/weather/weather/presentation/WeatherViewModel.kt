@@ -26,7 +26,7 @@ class WeatherViewModel @Inject constructor(
     private var _mutableListWeather = mutableListOf<WeatherItem>()
 
     fun searchCity(city: String) {
-        viewModelScope.launch {
+        dispatchers.launchUI(viewModelScope) {
             _mutableWeather.value = WeatherState.Loading()
             weatherInteractor.executeSearchCity(city).collect {
                 when(it){

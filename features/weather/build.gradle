@@ -39,4 +39,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
+
+    testImplementation 'junit:junit:4.13.2'
 }
